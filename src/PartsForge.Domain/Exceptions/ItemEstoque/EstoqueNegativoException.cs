@@ -1,4 +1,3 @@
-
 namespace PartsForge.Domain.Exceptions;
 
 public class EstoqueNegativoException : DomainException
