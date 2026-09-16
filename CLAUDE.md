@@ -32,6 +32,10 @@ Repositório recém-criado, ainda sem código (apenas o plano). A Fase 1 (backen
 
 Essas regras são o núcleo candidato a TDD: escreva os testes de domínio antes ou junto da implementação.
 
+## Decisões em aberto
+
+- **Substituir um item faltante em uma receita existente**: além de `AdicionarItem`, pode fazer sentido trocar/substituir um `ReceitaItem` já cadastrado (ex: item descontinuado por outro equivalente). Ainda não decidido como isso deve funcionar — confirmar com o usuário antes de implementar.
+
 ## Arquitetura alvo
 
 Clean Architecture em .NET 8, com as camadas:
