@@ -25,15 +25,15 @@ Regras de negócio candidatas (boas para TDD):
 **Meta:** domínio sólido, testável, rodando localmente.
 
 - [x] Criar solução .NET 8 com camadas: `Domain`, `Application`, `Infrastructure`, `Presentation`
-- [ ] Modelar entidades de domínio: `ItemEstoque`, `Receita`, `ReceitaItem`
-- [ ] Implementar regras de negócio no domínio (não em controllers/services anêmicos)
+- [x] Modelar entidades de domínio: `ItemEstoque`, `Receita`, `ReceitaItem`
+- [x] Implementar regras de negócio no domínio (não em controllers/services anêmicos)
 - [ ] Configurar Entity Framework Core + SQL Server (via Docker local)
 - [ ] Endpoints REST:
   - CRUD de itens de estoque
   - CRUD de receitas (com itens associados)
   - Consultar viabilidade de uma receita (disponível vs. necessário, por item)
   - Executar uma receita (decrementa estoque de todos os itens, de forma atômica, se viável)
-- [ ] Testes unitários das regras de domínio (casos: execução com estoque insuficiente, execução atômica com falha parcial, decremento correto ao executar)
+- [x] Testes unitários das regras de domínio (casos: execução com estoque insuficiente, execução atômica com falha parcial, decremento correto ao executar)
 - [ ] Testes de integração básicos nos endpoints principais
 
 ## Fase 2 — Frontend básico (Angular)
