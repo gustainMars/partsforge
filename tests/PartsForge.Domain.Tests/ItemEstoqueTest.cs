@@ -1,5 +1,4 @@
 using PartsForge.Domain.Exceptions;
-using Xunit;
 
 namespace PartsForge.Domain.Tests;
 
