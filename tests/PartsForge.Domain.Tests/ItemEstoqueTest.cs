@@ -1,3 +1,4 @@
+using PartsForge.Domain.Entities;
 using PartsForge.Domain.Exceptions;
 
 namespace PartsForge.Domain.Tests;

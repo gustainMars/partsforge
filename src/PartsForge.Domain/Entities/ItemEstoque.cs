@@ -1,7 +1,7 @@
 
 using PartsForge.Domain.Exceptions;
 
-namespace PartsForge.Domain;
+namespace PartsForge.Domain.Entities;
 
 public class ItemEstoque
 {
