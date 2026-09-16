@@ -1,0 +1,6 @@
+@PartsForge.Presentation_HostAddress = http://localhost:5015
+
+GET {{PartsForge.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
