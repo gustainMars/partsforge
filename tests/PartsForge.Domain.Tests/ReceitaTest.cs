@@ -54,6 +54,32 @@ public class ReceitaTest
     }
 
     [Fact]
+    public void VerificarViabilidade_ItemSuficiente_RetornaItemComSuficienteVerdadeiro()
+    {
+        var itemEstoque = new ItemEstoque(1, "Item A", 10);
+        var receitaItem = new ReceitaItem(1, itemEstoque, 5);
+        var receita = new Receita("Receita Teste", [receitaItem]);
+
+        var resultado = receita.VerificarViabilidade();
+
+        Assert.Single(resultado);
+        Assert.True(resultado[0].Suficiente);
+    }
+    
+    [Fact]
+    public void VerificarViabilidade_ItemInsuficiente_RetornaItemComSuficienteFalso()
+    {
+        var itemEstoque = new ItemEstoque(1, "Item A", 5);
+        var receitaItem = new ReceitaItem(1, itemEstoque, 10);
+        var receita = new Receita("Receita Teste", [receitaItem]);
+
+        var resultado = receita.VerificarViabilidade();
+
+        Assert.Single(resultado);
+        Assert.False(resultado[0].Suficiente);
+    }
+
+    [Fact]
     public void Executar_CriaReceitaComItensSuficientes_Sucesso()
     {
         var itemEstoque = new ItemEstoque(1, "Item A", 10);
