@@ -66,6 +66,7 @@ Regras de negócio candidatas (boas para TDD):
   - Azure Database (SQL ou MySQL, compatível com o EF Core já usado)
   - Azure App Service (hospedar a API)
   - Azure Key Vault (armazenar connection string e secrets)
+  - Azure Service Bus (fila para processamento assíncrono — ver Fase 7)
   - (Opcional) Application Insights, para observabilidade
 - [ ] Rodar `terraform plan` e `terraform apply` manualmente primeiro — entender o que cada recurso faz antes de automatizar
 - [ ] Documentar as decisões de infraestrutura (por que cada recurso, trade-offs)
@@ -79,13 +80,26 @@ Regras de negócio candidatas (boas para TDD):
   3. Deploy no Azure App Service
 - [ ] (Opcional, se sobrar tempo/energia) Explorar deploy do Terraform também via pipeline (Terraform Cloud ou GitHub Actions)
 
-## Fase 7 — Polimento para portfólio
+## Fase 7 — Processamento assíncrono com mensageria (Azure Service Bus)
+**Meta:** cobrir o gap técnico mais recorrente entre as vagas analisadas (mensageria, processamento assíncrono, idempotência) — presente em Prezensa (RabbitMQ), nstech (ServiceBus) e, de forma central, na Harmo (filas, retries, idempotência, degradação parcial).
+
+- [ ] Redesenhar o fluxo de "Executar receita" para ser assíncrono:
+  - Ao clicar em "Executar", a API publica uma mensagem na fila (Azure Service Bus) em vez de decrementar o estoque de forma síncrona.
+  - Um worker (background service / consumer) processa a mensagem e realiza o decremento atômico do estoque.
+  - O status da execução passa a ter estados: `Solicitada` → `Processando` → `Concluída` / `Falhou`.
+- [ ] Implementar **idempotência** no consumidor: se a mesma mensagem for reprocessada (reentrega da fila), o resultado não pode ser aplicado em duplicidade (ex: usar um identificador único de execução e registrar o que já foi processado).
+- [ ] Tratar **retries e dead-letter queue**: definir política de novas tentativas em caso de falha transitória, e mover para fila de mensagens mortas após N tentativas malsucedidas.
+- [ ] Considerar (e documentar) o cenário de **degradação parcial**: o que acontece se o worker estiver indisponível — a solicitação de execução deve continuar sendo aceita (enfileirada) mesmo que o processamento fique temporariamente atrasado.
+- [ ] Testes automatizados cobrindo: mensagem duplicada não gera decremento duplicado, falha simulada aciona retry, exaustão de tentativas move para dead-letter.
+- [ ] Documentar no README as decisões de consistência eventual (por que assíncrono aqui, trade-offs assumidos).
+
+## Fase 8 — Polimento para portfólio
 **Meta:** projeto pronto para ser mostrado em entrevistas e no LinkedIn.
 
 - [ ] README completo: visão geral, arquitetura, decisões técnicas, como rodar localmente
 - [ ] Link de demo funcionando (se o Azure App Service estiver ativo)
 - [ ] Repositório público no GitHub
-- [ ] Post no LinkedIn contando o processo e os aprendizados (Azure, Terraform, CI/CD do zero)
+- [ ] Post no LinkedIn contando o processo e os aprendizados (Azure, Terraform, CI/CD do zero, mensageria)
 
 ---
 
@@ -94,8 +108,9 @@ Regras de negócio candidatas (boas para TDD):
 Dado que há processos seletivos ativos em paralelo (Jane, BTG, Asaas), a prioridade é:
 
 1. **Fases 1–3** primeiro — são fluência natural (Clean Architecture, Angular, Docker), rápidas de entregar.
-2. **Fases 4–6** são o verdadeiro objetivo de aprendizado (JWT, Terraform, Azure, CI/CD do zero) — sem pressa de prazo, é onde vale errar e aprender de verdade.
-3. **Fase 7** ao final, quando o projeto já estiver estável.
+2. **Fases 4–6** são objetivo de aprendizado (JWT, Terraform, Azure, CI/CD do zero) — sem pressa de prazo, é onde vale errar e aprender de verdade.
+3. **Fase 7 (mensageria/assíncrono)** é a mais estratégica para entrevistas: é o gap técnico que mais se repete nas vagas analisadas. Vale priorizar mesmo que fique mais simples que o ideal — o objetivo é ter um exemplo real e defensável de idempotência e processamento assíncrono para citar em entrevista.
+4. **Fase 8** ao final, quando o projeto já estiver estável.
 
 ## Notas
 - Priorizar sempre entrevistas e testes técnicos dos processos em andamento sobre o avanço deste projeto.
