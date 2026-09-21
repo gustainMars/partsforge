@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PartsForge.Application.UseCases.Receitas.ConsultarViabilidade;
+using PartsForge.Application.UseCases.Receitas.ExecutarReceita;
 using PartsForge.Presentation.Responses;
 
 namespace PartsForge.Presentation.Controllers;
@@ -21,5 +22,18 @@ public class ReceitasController(ISender sender) : ControllerBase
         var resultado = await _sender.Send(query, cancellationToken);
         
         return Ok(resultado.Select(ItemViabilidadeResponse.From).ToList());
+    }
+
+    [HttpPost("{receitaId}/executar")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> Executar(int receitaId, CancellationToken cancellationToken)
+    {
+        ExecutarReceitaCommand command = new(receitaId);
+        
+        await _sender.Send(command, cancellationToken);
+        
+        return NoContent();
     }
 }

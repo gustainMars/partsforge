@@ -27,12 +27,12 @@ Regras de negócio candidatas (boas para TDD):
 - [x] Criar solução .NET 8 com camadas: `Domain`, `Application`, `Infrastructure`, `Presentation`
 - [x] Modelar entidades de domínio: `ItemEstoque`, `Receita`, `ReceitaItem`
 - [x] Implementar regras de negócio no domínio (não em controllers/services anêmicos)
-- [ ] Configurar Entity Framework Core + SQL Server (via Docker local)
+- [x] Configurar Entity Framework Core + SQL Server (via Docker local)
 - [ ] Endpoints REST:
   - CRUD de itens de estoque
   - CRUD de receitas (com itens associados)
-  - Consultar viabilidade de uma receita (disponível vs. necessário, por item)
-  - Executar uma receita (decrementa estoque de todos os itens, de forma atômica, se viável)
+  [x] Consultar viabilidade de uma receita (disponível vs. necessário, por item)
+  [x] Executar uma receita (decrementa estoque de todos os itens, de forma atômica, se viável)
 - [x] Testes unitários das regras de domínio (casos: execução com estoque insuficiente, execução atômica com falha parcial, decremento correto ao executar)
 - [ ] Testes de integração básicos nos endpoints principais
 
