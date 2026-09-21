@@ -9,6 +9,8 @@ public class Receita(string descricao, List<ReceitaItem>? itens)
     public string Descricao { get; init; } = descricao;
     public List<ReceitaItem> Itens { get; private set; } = ValidarItens(itens ?? []);
 
+    private Receita() : this("", []) {}
+    
     public void AdicionarItem(ReceitaItem item)
     {
         Itens = ValidarItens([ ..Itens, item ]);

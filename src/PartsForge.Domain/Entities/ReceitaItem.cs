@@ -19,6 +19,8 @@ public class ReceitaItem
         Quantidade = quantidade;
     }
 
+    private ReceitaItem() { }
+
     private static void GarantirQuantidadeValida(int quantidade)
     {
         if (quantidade <= 0)
