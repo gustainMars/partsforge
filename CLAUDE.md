@@ -35,6 +35,7 @@ Essas regras são o núcleo candidato a TDD: escreva os testes de domínio antes
 ## Decisões em aberto
 
 - **Substituir um item faltante em uma receita existente**: além de `AdicionarItem`, pode fazer sentido trocar/substituir um `ReceitaItem` já cadastrado (ex: item descontinuado por outro equivalente). Ainda não decidido como isso deve funcionar — confirmar com o usuário antes de implementar.
+- **Teto de quantidade por item**: hoje `ItemEstoque.QuantidadeMaxima = int.MaxValue` (neutro). Confirmar com o usuário se existe um limite de negócio menor. Se sim, reduzir a constante, validar também no construtor e avaliar migração de dados existentes.
 
 ## Arquitetura alvo
 
