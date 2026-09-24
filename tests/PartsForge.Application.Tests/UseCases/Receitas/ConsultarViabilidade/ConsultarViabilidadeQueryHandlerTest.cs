@@ -11,7 +11,7 @@ public class ConsultarViabilidadeQueryHandlerTest
     [Fact]
     public async Task Handle_ReceitaExistente_RetornaViabilidade()
     {
-        var itemEstoque = new ItemEstoque(1, "Item A", 10);
+        var itemEstoque = new ItemEstoque("Item A", 10) { Id = 1 };
         var receitaItem = new ReceitaItem(1, itemEstoque, 5);
         var receita = new Receita("Receita Teste", [receitaItem]);
 

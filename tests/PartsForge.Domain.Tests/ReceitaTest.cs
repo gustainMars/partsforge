@@ -8,10 +8,10 @@ public class ReceitaTest
     [Fact]
     public void Construtor_CriaReceitaComItensDiferentes_Sucesso()
     {
-        var itemEstoque = new ItemEstoque(1, "Item A", 10);
+        var itemEstoque = new ItemEstoque("Item A", 10) { Id = 1 };
         var receitaItem = new ReceitaItem(1, itemEstoque, 5);
 
-        var itemEstoqueB = new ItemEstoque(2, "Item B", 8);
+        var itemEstoqueB = new ItemEstoque("Item B", 8) { Id = 2 };
         var receitaItemB = new ReceitaItem(2, itemEstoqueB, 3);
         
         var receita = new Receita("Receita Teste", [ receitaItem, receitaItemB ]);
@@ -22,7 +22,7 @@ public class ReceitaTest
     [Fact]
     public void Construtor_CriaReceitaComItensIguais_DeveLancarItemDuplicadoException()
     {
-        var itemEstoque = new ItemEstoque(1, "Item A", 10);
+        var itemEstoque = new ItemEstoque("Item A", 10) { Id = 1 };
         var receitaItem = new ReceitaItem(1, itemEstoque, 5);
         
         Assert.Throws<ItemDuplicadoException>(() => new Receita("Receita Teste", [ receitaItem, receitaItem ]));
@@ -31,11 +31,11 @@ public class ReceitaTest
     [Fact]
     public void AdicionarItem_AdicionaItemNaReceita_Sucesso()
     {
-        var itemEstoque = new ItemEstoque(1, "Item A", 10);
+        var itemEstoque = new ItemEstoque("Item A", 10) { Id = 1 };
         var receitaItem = new ReceitaItem(1, itemEstoque, 5);
         var receita = new Receita("Receita Teste", [ receitaItem ]);
         
-        var itemEstoqueB = new ItemEstoque(2, "Item B", 8);
+        var itemEstoqueB = new ItemEstoque("Item B", 8) { Id = 2 };
         var receitaItemB = new ReceitaItem(2, itemEstoqueB, 3);
         
         receita.AdicionarItem(receitaItemB);
@@ -46,7 +46,7 @@ public class ReceitaTest
     [Fact]
     public void AdicionarItem_AdicionaItemDuplicado_DeveLancarItemDuplicadoException()
     {
-        var itemEstoque = new ItemEstoque(1, "Item A", 10);
+        var itemEstoque = new ItemEstoque("Item A", 10) { Id = 1 };
         var receitaItem = new ReceitaItem(1, itemEstoque, 5);
         var receita = new Receita("Receita Teste", [ receitaItem ]);
         
@@ -56,7 +56,7 @@ public class ReceitaTest
     [Fact]
     public void VerificarViabilidade_ItemSuficiente_RetornaItemComSuficienteVerdadeiro()
     {
-        var itemEstoque = new ItemEstoque(1, "Item A", 10);
+        var itemEstoque = new ItemEstoque("Item A", 10) { Id = 1 };
         var receitaItem = new ReceitaItem(1, itemEstoque, 5);
         var receita = new Receita("Receita Teste", [receitaItem]);
 
@@ -69,7 +69,7 @@ public class ReceitaTest
     [Fact]
     public void VerificarViabilidade_ItemInsuficiente_RetornaItemComSuficienteFalso()
     {
-        var itemEstoque = new ItemEstoque(1, "Item A", 5);
+        var itemEstoque = new ItemEstoque("Item A", 5) { Id = 1 };
         var receitaItem = new ReceitaItem(1, itemEstoque, 10);
         var receita = new Receita("Receita Teste", [receitaItem]);
 
@@ -82,7 +82,7 @@ public class ReceitaTest
     [Fact]
     public void Executar_CriaReceitaComItensSuficientes_Sucesso()
     {
-        var itemEstoque = new ItemEstoque(1, "Item A", 10);
+        var itemEstoque = new ItemEstoque("Item A", 10) { Id = 1 };
         var receitaItem = new ReceitaItem(1, itemEstoque, 5);
         var receita = new Receita("Receita Teste", [ receitaItem ]);
 
@@ -93,7 +93,7 @@ public class ReceitaTest
     [Fact]
     public void Executar_CriaReceitaComItensInsuficientes_DeveLancarReceitaInviavelException()
     {
-        var itemEstoque = new ItemEstoque(1, "Item A", 3);
+        var itemEstoque = new ItemEstoque("Item A", 3) { Id = 1 };
         var receitaItem = new ReceitaItem(1, itemEstoque, 5);
         var receita = new Receita("Receita Teste", [ receitaItem ]);
 
@@ -103,8 +103,8 @@ public class ReceitaTest
     [Fact]
     public void Executar_UmItemInsuficienteEOutroSuficiente_NaoDecrementaNenhum()
     {
-        var itemSuficiente = new ItemEstoque(1, "Item A", 10);
-        var itemInsuficiente = new ItemEstoque(2, "Item B", 2);
+        var itemSuficiente = new ItemEstoque("Item A", 10) { Id = 1 };
+        var itemInsuficiente = new ItemEstoque("Item B", 2) { Id = 2 };
 
         var receitaItemA = new ReceitaItem(1, itemSuficiente, 5);
         var receitaItemB = new ReceitaItem(1, itemInsuficiente, 5);

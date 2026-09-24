@@ -12,6 +12,6 @@ public class ItemEstoqueConfiguration : IEntityTypeConfiguration<ItemEstoque>
 
         builder.Property(i => i.Descricao)
             .IsRequired()
-            .HasMaxLength(200);
+            .HasMaxLength(ItemEstoque.TamanhoMaximoDescricao);
     }
 }
