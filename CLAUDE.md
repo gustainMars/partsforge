@@ -36,6 +36,7 @@ Essas regras são o núcleo candidato a TDD: escreva os testes de domínio antes
 
 - **Substituir um item faltante em uma receita existente**: além de `AdicionarItem`, pode fazer sentido trocar/substituir um `ReceitaItem` já cadastrado (ex: item descontinuado por outro equivalente). Ainda não decidido como isso deve funcionar — confirmar com o usuário antes de implementar.
 - **Teto de quantidade por item**: hoje `ItemEstoque.QuantidadeMaxima = int.MaxValue` (neutro). Confirmar com o usuário se existe um limite de negócio menor. Se sim, reduzir a constante, validar também no construtor e avaliar migração de dados existentes.
+- **Débito técnico — namespace das exceções inconsistente entre camadas**: no `Domain`, as pastas de exceção são por entidade (`Exceptions/ItemEstoque/`, `Exceptions/ReceitaItem/`), mas o namespace foi achatado (`PartsForge.Domain.Exceptions` para tudo) para evitar colisão com o nome da entidade. Na `Application`, o padrão foi diferente: pasta **e** namespace pluralizados (`Exceptions/ItensEstoque/` → `PartsForge.Application.Exceptions.ItensEstoque`), igual ao que `UseCases` já faz. Os dois evitam a colisão, mas de formas diferentes — decidido adiar a unificação (provável retrofit do Domain para o padrão pluralizado, já dominante no projeto) para depois de fechar o CRUD do `ItemEstoque`, por ser um refactor maior (muda o `using` de todo arquivo que consome exceções do Domain, inclusive testes).
 
 ## Arquitetura alvo
 
@@ -71,6 +72,21 @@ Frontend: Angular, consumindo a API via `HttpClient`. Interface funcional, sem f
 ## TDD
 
 - Metodologia TDD: escrever os testes antes do código de produção, não depois. O teste define o comportamento esperado; a implementação vem para fazê-lo passar.
+
+## Convenções de código C#
+
+- Em classes com *primary constructor* que recebem dependências (handlers do MediatR, repositórios, etc.), declare um campo `private readonly` explícito para cada dependência e use o campo (não o parâmetro) no corpo dos métodos — nunca referencie o parâmetro do construtor primário diretamente. Exemplo:
+  ```csharp
+  public class FooHandler(IBar bar) : IRequestHandler<...>
+  {
+      private readonly IBar _bar = bar;
+
+      public async Task Handle(...)
+      {
+          await _bar.Algo(...); // não `bar.Algo(...)`
+      }
+  }
+  ```
 
 ## Clean Code
 
