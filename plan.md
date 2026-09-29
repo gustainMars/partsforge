@@ -16,7 +16,7 @@ O colega validou a ideia com o usuário final (dono de uma fábrica de máquinas
 
 ## Domínio do sistema
 
-- **Item de Estoque**: código interno (sequencial, único), descrição, unidade de medida, quantidade disponível, tipo (**comprado** ou **fabricado por terceiros**), lead time em dias, desenho técnico anexado (PDF/DXF).
+- **Item de Estoque**: código interno (digitado pelo usuário na criação, único, separado do Id técnico — permite localizar e excluir o item pelo código), descrição, unidade de medida, quantidade disponível, tipo (**comprado** ou **fabricado por terceiros**), lead time em dias, desenho técnico anexado (PDF/DXF).
 - **Fornecedor**: razão social, CNPJ, telefone, nome do contato (uma empresa pode ter mais de um fornecedor cadastrado, e um fornecedor pode ter mais de uma pessoa de contato/vendedor).
 - **Item de Fornecedor** (associação N:N entre Item de Estoque e Fornecedor): código do produto no fornecedor, lead time específico daquele fornecedor para aquele item. Ao lançar uma ordem de compra com um código de fornecedor ainda não mapeado, o sistema deve permitir associá-lo a um item interno já existente.
 - **Histórico de Compra**: item, fornecedor, valor e data da compra — alimentado pela entrada da nota fiscal.
@@ -34,6 +34,7 @@ O colega validou a ideia com o usuário final (dono de uma fábrica de máquinas
 - Não é possível decrementar estoque abaixo de zero.
 - Executar uma receita ou uma execução de MRP decrementa o estoque de todos os itens envolvidos de forma **atômica** (tudo ou nada).
 - A geração de necessidades (MRP) é feita por produto (código) + quantidade desejada (N ≥ 1) + data de início de montagem.
+- `Receita.VerificarViabilidade` e `Receita.Executar` ganham um parâmetro `quantidadeDesejada` com valor padrão 1 (compatível com o comportamento atual, sem quebrar chamadas existentes). `Necessario` passa a ser `ReceitaItem.Quantidade * quantidadeDesejada`, e o decremento em `Executar` precisa usar o mesmo produto — as duas contas têm que mudar juntas, senão a viabilidade considera `N` mas a baixa de estoque não, gerando consumo real menor do que o calculado sem nenhum erro aparente. Vale um teste específico para essa sincronização (`Executar(quantidadeDesejada: 3)` decrementando exatamente `Quantidade * 3`).
 - A data limite de compra de cada item = data de início da montagem − lead time do item (ou do fornecedor selecionado para aquele item, quando houver mais de um cadastrado).
 - O MRP considera apenas o **estoque físico atual** — não desconta pedidos de compra já em andamento; a resposta a isso é justamente gerar a ordem de compra, não reservar estoque virtual.
 - **Modo simulação** do MRP não altera nada no sistema; **modo execução** decrementa o estoque de todos os itens envolvidos de forma atômica, igual à execução de receita já implementada.
@@ -63,10 +64,11 @@ O colega validou a ideia com o usuário final (dono de uma fábrica de máquinas
 
 - [ ] Adicionar campo de lead time (dias) ao cadastro de `ItemEstoque`
 - [ ] Adicionar campo de tipo do item (comprado / fabricado por terceiros)
-- [ ] Caso de uso: dado um código de receita, uma quantidade desejada (N) e uma data de início de montagem, calcular por item: disponível, necessário total (considerando N), falta comprar, data limite de compra
+- [ ] Estender `Receita.VerificarViabilidade(int quantidadeDesejada = 1)` e `Receita.Executar(int quantidadeDesejada = 1)` para multiplicar `Necessario` e o decremento por `quantidadeDesejada`, com validação de `N ≥ 1` (exceção de domínio própria) e atenção a overflow de `int` na multiplicação
+- [ ] Caso de uso: dado um código de receita, uma quantidade desejada (N) e uma data de início de montagem, calcular por item: disponível, necessário total (considerando N), falta comprar, data limite de compra (usa o lead time genérico do `ItemEstoque` — ver decisão sobre lead time por fornecedor)
 - [ ] Modo simulação (somente consulta, não altera estoque)
 - [ ] Modo execução (dá baixa real no estoque, atômica, igual à execução de receita atual)
-- [ ] Testes unitários: quantidade N > 1, cálculo de data limite por item, atomicidade da execução, diferença entre modo simulação e execução
+- [ ] Testes unitários: quantidade N > 1 (viabilidade **e** decremento sincronizados), N inválido (< 1), cálculo de data limite por item, atomicidade da execução, diferença entre modo simulação e execução
 
 ## Fase 3 — Fornecedores e itens de fornecedor
 **Meta:** permitir associar cada item de estoque a um ou mais fornecedores.
@@ -182,7 +184,8 @@ Dado que há processos seletivos ativos em paralelo (Jane, BTG, Asaas), e que o 
 
 - **Substituir um item faltante em uma receita existente**: além de `AdicionarItem`, pode fazer sentido trocar/substituir um `ReceitaItem` já cadastrado (ex: item descontinuado por outro equivalente). Ainda não decidido como isso deve funcionar — confirmar com o usuário antes de implementar.
 - **Teto de quantidade por item**: hoje `ItemEstoque.QuantidadeMaxima = int.MaxValue` (neutro). Confirmar com o usuário se existe um limite de negócio menor. Se sim, reduzir a constante, validar também no construtor e avaliar migração de dados existentes.
-- **Lead time por fornecedor vs. lead time genérico do item**: quando um item tem mais de um fornecedor cadastrado, o MRP deve usar o lead time de qual fornecedor (o mais rápido? o último usado? um fornecedor "preferencial" marcado no cadastro)? A definir antes de implementar a Fase 2 por completo.
+- **Código interno do Item de Estoque**: será digitado pelo usuário, não gerado pelo sistema. O formato (prefixo/sufixo, padronização por categoria etc.) ainda não foi definido — confirmar com o usuário final o padrão real usado por ele antes de desenhar a regra de validação (hoje só sabemos que precisa ser obrigatório e único).
+- **Lead time por fornecedor vs. lead time genérico do item**: quando um item tem mais de um fornecedor cadastrado, o MRP deve usar o lead time de qual fornecedor (o mais rápido? o último usado? um fornecedor "preferencial" marcado no cadastro)? **Resolvido para a Fase 2**: o MRP nasce usando só o lead time genérico do `ItemEstoque` (Fase 3 ainda não existe nesse ponto do roteiro); ao implementar a Fase 3, o cálculo é estendido para considerar o lead time por fornecedor quando houver um cadastrado — mudança aditiva (lookup a mais na Application), não uma reescrita do que a Fase 2 entregar. A pergunta em aberto de verdade é só a regra de qual fornecedor prevalece, e essa sim fica para decidir quando a Fase 3 começar.
 - **Numeração da ordem de compra**: sequencial global do sistema ou por empresa/ano? A definir na Fase 4.
 - **Formato exato da ordem de compra gerada**: usar como inspiração o modelo enviado pelo usuário (ordem de compra real de uma empresa em que trabalhou), sem necessidade de ser idêntico — confirmar campos obrigatórios (negociação, forma de pagamento, frete, impostos) antes de fechar o layout na Fase 4.
 
