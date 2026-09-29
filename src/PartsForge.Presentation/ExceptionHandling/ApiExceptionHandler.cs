@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using PartsForge.Application.Exceptions;
+using PartsForge.Application.Exceptions.Receitas;
 using PartsForge.Domain.Exceptions;
 using PartsForge.Presentation.Responses;
 

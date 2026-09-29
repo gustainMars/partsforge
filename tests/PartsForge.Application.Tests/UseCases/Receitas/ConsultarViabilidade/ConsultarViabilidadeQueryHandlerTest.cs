@@ -1,5 +1,5 @@
 using Moq;
-using PartsForge.Application.Exceptions;
+using PartsForge.Application.Exceptions.Receitas;
 using PartsForge.Application.Interfaces;
 using PartsForge.Application.UseCases.Receitas.ConsultarViabilidade;
 using PartsForge.Domain.Entities;

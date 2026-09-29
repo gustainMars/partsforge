@@ -1,5 +1,5 @@
 using MediatR;
-using PartsForge.Application.Exceptions;
+using PartsForge.Application.Exceptions.Receitas;
 using PartsForge.Application.Interfaces;
 
 namespace PartsForge.Application.UseCases.Receitas.ExecutarReceita;

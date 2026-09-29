@@ -1,4 +1,4 @@
-namespace PartsForge.Application.Exceptions;
+namespace PartsForge.Application.Exceptions.Receitas;
 
 public class ReceitaNaoEncontradaException : AppException
 {
