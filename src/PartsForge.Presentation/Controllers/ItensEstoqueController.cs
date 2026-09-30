@@ -25,9 +25,9 @@ public class ItensEstoqueController(ISender sender) : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<int>> Criar(CriarItemEstoqueCommand command, CancellationToken cancellationToken)
+    public async Task<ActionResult<ItemEstoqueDto>> Criar(CriarItemEstoqueCommand command, CancellationToken cancellationToken)
     {
-        var id = await _sender.Send(command, cancellationToken);
-        return CreatedAtAction(nameof(ObterPorId), new { id }, id);
+        var item = await _sender.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(ObterPorId), new { id = item.Id }, item);
     }
 }

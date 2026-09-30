@@ -24,6 +24,7 @@ public class CriarItemEstoqueCommandHandlerTest
 
         var resultado = await handler.Handle(new CriarItemEstoqueCommand(itemEstoque.Descricao, itemEstoque.Quantidade), CancellationToken.None);
 
+        Assert.Equal(itemEstoque.Descricao, resultado.Descricao);
         repositorioMock.Verify(r => r.Adicionar(It.IsAny<ItemEstoque>()), Times.Once);
         unitOfWorkMock.Verify(u => u.SalvarAlteracoesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
