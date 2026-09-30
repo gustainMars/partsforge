@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using PartsForge.Application.Exceptions.ItensEstoque;
 using PartsForge.Application.Exceptions.Receitas;
 using PartsForge.Domain.Exceptions;
 using PartsForge.Presentation.Responses;
@@ -20,6 +21,8 @@ public class ApiExceptionHandler : IExceptionHandler
                 Title = exception.Message, 
                 Extensions = { ["itens"] = inviavel.Itens.Select(ItemViabilidadeResponse.From).ToList() }
             },
+            DescricaoJaCadastradaException => new ProblemDetails { Status = 409, Title = exception.Message },
+            ItemEstoqueNaoEncontradoException => new ProblemDetails { Status = 404, Title = exception.Message },
             DomainException => new ProblemDetails { Status = 400, Title = exception.Message },
             _ => null
         };
