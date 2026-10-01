@@ -1,6 +1,6 @@
 # PartsForge
 
-Sistema de gestão de estoque de peças e receitas de montagem (BOM) para projetos de máquinas. Projeto pessoal real (uso por um amigo) construído também para praticar .NET 8, Azure, Terraform, CI/CD do zero, observabilidade e JWT.
+Sistema de gestão de estoque de peças e receitas de montagem (BOM) para projetos de máquinas. Projeto pessoal real (uso por um amigo) construído também para praticar .NET 10, Azure, Terraform, CI/CD do zero, observabilidade e JWT.
 
 O plano de execução completo, com fases e checkboxes de progresso, vive em [plan.md](plan.md). Consulte e mantenha esse arquivo atualizado (marcar itens concluídos) conforme o trabalho avança — ele é a fonte de verdade sobre o que já foi feito e o que falta.
 
@@ -40,7 +40,7 @@ Essas regras são o núcleo candidato a TDD: escreva os testes de domínio antes
 
 ## Arquitetura alvo
 
-Clean Architecture em .NET 8, com as camadas:
+Clean Architecture em .NET 10, com as camadas:
 
 - `Domain` — entidades (`ItemEstoque`, `Receita`, `ReceitaItem`) e regras de negócio.
 - `Application` — casos de uso (consultar viabilidade, executar receita, CRUDs).

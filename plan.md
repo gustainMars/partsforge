@@ -3,7 +3,7 @@
 > Sistema de gestão de estoque de peças e receitas de montagem para projetos de máquinas. Este documento cobre o **escopo inicial (MVP)** — melhorias futuras devem ser adicionadas como novas fases ao final deste plano, mantendo o histórico do que já foi decidido.
 
 ## Objetivo
-Construir um sistema real (para um amigo) de controle de estoque de peças e "receitas" de montagem de produtos, aproveitando o projeto para preencher lacunas técnicas identificadas em processos seletivos recentes: **.NET 8, Azure, Terraform, CI/CD criado do zero, observabilidade, JWT**.
+Construir um sistema real (para um amigo) de controle de estoque de peças e "receitas" de montagem de produtos, aproveitando o projeto para preencher lacunas técnicas identificadas em processos seletivos recentes: **.NET 10, Azure, Terraform, CI/CD criado do zero, observabilidade, JWT**.
 
 ## Contexto de negócio (levantamento com o usuário final)
 
@@ -47,7 +47,8 @@ O colega validou a ideia com o usuário final (dono de uma fábrica de máquinas
 ## Fase 1 — Backend local (Clean Architecture)
 **Meta:** domínio sólido, testável, rodando localmente.
 
-- [x] Criar solução .NET 8 com camadas: `Domain`, `Application`, `Infrastructure`, `Presentation`
+- [x] Criar solução .NET 10 com camadas: `Domain`, `Application`, `Infrastructure`, `Presentation`
+- [x] Atualizado de .NET 8 para .NET 10 (LTS) em 2026-09-30 — o suporte do .NET 8 encerra em 10/11/2026 (só patches de segurança desde então); upgrade feito cedo, enquanto o projeto ainda é pequeno e o custo de mudança é baixo
 - [x] Modelar entidades de domínio: `ItemEstoque`, `Receita`, `ReceitaItem`
 - [x] Implementar regras de negócio no domínio (não em controllers/services anêmicos)
 - [x] Configurar Entity Framework Core + SQL Server (via Docker local)
@@ -107,7 +108,7 @@ O colega validou a ideia com o usuário final (dono de uma fábrica de máquinas
 ## Fase 7 — Containerização
 **Meta:** tudo rodando via Docker Compose localmente.
 
-- [ ] Dockerfile multi-stage para a API (.NET 8)
+- [ ] Dockerfile multi-stage para a API (.NET 10)
 - [ ] `docker-compose.yml` com API + banco de dados
 - [ ] Validar que o ambiente sobe do zero com um único comando
 

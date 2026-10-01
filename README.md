@@ -6,7 +6,7 @@ API de gestão de estoque de peças e receitas de montagem (BOM). Uma receita li
 
 ## Tecnologias
 
-.NET 8 · ASP.NET Core · Clean Architecture · CQRS com MediatR · EF Core 8 · SQL Server 2022 (Docker) · xUnit e Moq
+.NET 10 · ASP.NET Core · Clean Architecture · CQRS com MediatR · EF Core 10 · SQL Server 2022 (Docker) · xUnit e Moq
 
 ## Arquitetura
 
@@ -23,9 +23,9 @@ As dependências apontam para dentro: `Presentation` e `Infrastructure` dependem
 
 ### Pré-requisitos
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [Docker](https://www.docker.com/products/docker-desktop/)
-- Ferramenta do EF Core: `dotnet tool install --global dotnet-ef --version 8.0.11`
+- Ferramenta do EF Core: `dotnet tool install --global dotnet-ef --version 10.0.12`
 
 ### Passo a passo
 
