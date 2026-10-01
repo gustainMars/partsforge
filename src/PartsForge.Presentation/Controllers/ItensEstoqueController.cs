@@ -1,9 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PartsForge.Application.Dtos;
-using PartsForge.Application.UseCases.ItensEstoque.CriarItemEstoque;
+using PartsForge.Application.UseCases.ItensEstoque.ListarItensEstoque;
 using PartsForge.Application.UseCases.ItensEstoque.ObterItemEstoquePorId;
-using PartsForge.Domain.Entities;
+using PartsForge.Application.UseCases.ItensEstoque.CriarItemEstoque;
 
 namespace PartsForge.Presentation.Controllers;
 
@@ -12,6 +12,14 @@ namespace PartsForge.Presentation.Controllers;
 public class ItensEstoqueController(ISender sender) : ControllerBase
 {
     private readonly ISender _sender = sender;
+
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<ItemEstoqueDto>>> Listar(CancellationToken cancellationToken)
+    {
+        var itens = await _sender.Send(new ListarItensEstoqueQuery(), cancellationToken);
+        return Ok(itens);
+    }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
