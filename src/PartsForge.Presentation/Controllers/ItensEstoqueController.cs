@@ -6,6 +6,7 @@ using PartsForge.Application.UseCases.ItensEstoque.ObterItemEstoquePorId;
 using PartsForge.Application.UseCases.ItensEstoque.CriarItemEstoque;
 using PartsForge.Application.UseCases.ItensEstoque.AlterarDescricao;
 using PartsForge.Presentation.Requests;
+using PartsForge.Application.UseCases.ItensEstoque.AdicionarEstoque;
 
 namespace PartsForge.Presentation.Controllers;
 
@@ -48,6 +49,16 @@ public class ItensEstoqueController(ISender sender) : ControllerBase
     public async Task<IActionResult> AlterarDescricao(int id, AlterarDescricaoRequest request, CancellationToken cancellationToken)
     {
         await _sender.Send(new AlterarDescricaoItemEstoqueCommand(id, request.NovaDescricao), cancellationToken);
+        return NoContent();
+    }
+
+    [HttpPatch("{id}/estoque/entrada")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AdicionarEstoque(int id, AdicionarEstoqueRequest request, CancellationToken cancellationToken)
+    {
+        await _sender.Send(new AdicionarEstoqueItemEstoqueCommand(id, request.Quantidade), cancellationToken);
         return NoContent();
     }
 }
