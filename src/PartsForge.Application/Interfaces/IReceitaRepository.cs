@@ -5,4 +5,7 @@ namespace PartsForge.Application.Interfaces;
 public interface IReceitaRepository
 {
     Task<Receita?> ObterComItensAsync(int id);
+    Task<List<Receita>> ListarComItensAsync();
+    void Adicionar(Receita receita);
+    void Remover(Receita receita);
 }

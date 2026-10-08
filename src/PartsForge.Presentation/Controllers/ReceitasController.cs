@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PartsForge.Application.Dtos;
 using PartsForge.Application.UseCases.Receitas.ConsultarViabilidade;
 using PartsForge.Application.UseCases.Receitas.ExecutarReceita;
+using PartsForge.Application.UseCases.Receitas.ListarReceitas;
 using PartsForge.Presentation.Responses;
 
 namespace PartsForge.Presentation.Controllers;
@@ -11,6 +13,14 @@ namespace PartsForge.Presentation.Controllers;
 public class ReceitasController(ISender sender) : ControllerBase
 {
     private readonly ISender _sender = sender;
+
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<ReceitaDto>>> Listar(CancellationToken cancellationToken)
+    {
+        var itens = await _sender.Send(new ListarReceitasQuery(), cancellationToken);
+        return Ok(itens);
+    }
 
     [HttpGet("{receitaId}/viabilidade")]
     [ProducesResponseType(StatusCodes.Status200OK)]
