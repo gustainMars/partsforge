@@ -53,8 +53,8 @@ O colega validou a ideia com o usuário final (dono de uma fábrica de máquinas
 - [x] Implementar regras de negócio no domínio (não em controllers/services anêmicos)
 - [x] Configurar Entity Framework Core + SQL Server (via Docker local)
 - [ ] Endpoints REST:
-  - CRUD de itens de estoque
-  - CRUD de receitas (com itens associados)
+  - [x] CRUD de itens de estoque
+  - [ ] CRUD de receitas (com itens associados)
   [x] Consultar viabilidade de uma receita (disponível vs. necessário, por item)
   [x] Executar uma receita (decrementa estoque de todos os itens, de forma atômica, se viável)
 - [x] Testes unitários das regras de domínio (casos: execução com estoque insuficiente, execução atômica com falha parcial, decremento correto ao executar)
