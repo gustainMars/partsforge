@@ -11,7 +11,7 @@ public class ConsultarViabilidadeQueryHandler(IReceitaRepository receitaReposito
 
     public async Task<IReadOnlyList<ItemViabilidade>> Handle(ConsultarViabilidadeQuery request, CancellationToken cancellationToken)
     {
-        var receita = await _receitaRepository.ObterComItensAsync(request.ReceitaId) ?? throw new ReceitaNaoEncontradaException();
+        var receita = await _receitaRepository.ObterComItensAsync(request.ReceitaId, cancellationToken) ?? throw new ReceitaNaoEncontradaException();
         return receita.VerificarViabilidade();
     }
 }

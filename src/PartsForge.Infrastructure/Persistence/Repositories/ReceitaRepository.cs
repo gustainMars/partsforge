@@ -21,12 +21,12 @@ public class ReceitaRepository(PartsForgeDbContext context) : IReceitaRepository
             .ToListAsync();
     }
 
-    public Task<Receita?> ObterComItensAsync(int id)
+    public Task<Receita?> ObterComItensAsync(int id, CancellationToken cancellationToken = default)
     {
         return _context.Receitas
             .Include(r => r.Itens)
                 .ThenInclude(ri => ri.ItemEstoque)
-            .FirstOrDefaultAsync(r => r.Id == id);
+            .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
 
     public void Remover(Receita receita)

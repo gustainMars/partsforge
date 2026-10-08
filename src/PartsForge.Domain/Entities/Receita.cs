@@ -5,7 +5,7 @@ namespace PartsForge.Domain.Entities;
 
 public class Receita(string descricao, List<ReceitaItem>? itens)
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
     public string Descricao { get; init; } = descricao;
     public List<ReceitaItem> Itens { get; private set; } = ValidarItens(itens ?? []);
 

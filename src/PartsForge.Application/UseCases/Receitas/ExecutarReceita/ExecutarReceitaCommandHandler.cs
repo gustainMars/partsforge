@@ -11,7 +11,7 @@ public class ExecutarReceitaCommandHandler(IReceitaRepository receitaRepository,
 
     public async Task<Unit> Handle(ExecutarReceitaCommand request, CancellationToken cancellationToken)
     {
-        var receita = await _receitaRepository.ObterComItensAsync(request.ReceitaId)
+        var receita = await _receitaRepository.ObterComItensAsync(request.ReceitaId, cancellationToken)
             ?? throw new ReceitaNaoEncontradaException();
 
         receita.Executar();

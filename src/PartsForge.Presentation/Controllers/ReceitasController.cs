@@ -4,6 +4,7 @@ using PartsForge.Application.Dtos;
 using PartsForge.Application.UseCases.Receitas.ConsultarViabilidade;
 using PartsForge.Application.UseCases.Receitas.ExecutarReceita;
 using PartsForge.Application.UseCases.Receitas.ListarReceitas;
+using PartsForge.Application.UseCases.Receitas.ObterReceitaPorId;
 using PartsForge.Presentation.Responses;
 
 namespace PartsForge.Presentation.Controllers;
@@ -20,6 +21,15 @@ public class ReceitasController(ISender sender) : ControllerBase
     {
         var itens = await _sender.Send(new ListarReceitasQuery(), cancellationToken);
         return Ok(itens);
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ReceitaDto>> ObterPorId(int id, CancellationToken cancellationToken)
+    {
+        var receita = await _sender.Send(new ObterReceitaPorIdQuery(id), cancellationToken);
+        return Ok(receita);
     }
 
     [HttpGet("{receitaId}/viabilidade")]
