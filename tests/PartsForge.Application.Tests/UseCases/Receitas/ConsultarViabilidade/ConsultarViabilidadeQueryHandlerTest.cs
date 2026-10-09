@@ -17,7 +17,7 @@ public class ConsultarViabilidadeQueryHandlerTest
 
         var repositorioMock = new Mock<IReceitaRepository>();
         repositorioMock
-            .Setup(r => r.ObterComItensAsync(1))
+            .Setup(r => r.ObterComItensAsync(1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(receita);
 
         var handler = new ConsultarViabilidadeQueryHandler(repositorioMock.Object);
@@ -33,7 +33,7 @@ public class ConsultarViabilidadeQueryHandlerTest
     {
         var repositorioMock = new Mock<IReceitaRepository>();
         repositorioMock
-            .Setup(r => r.ObterComItensAsync(1))
+            .Setup(r => r.ObterComItensAsync(1, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Receita?)null);
 
         var handler = new ConsultarViabilidadeQueryHandler(repositorioMock.Object);

@@ -10,7 +10,7 @@ public class ListarReceitasQueryHandler(IReceitaRepository receitaRepository) : 
     
     public async Task<List<ReceitaDto>> Handle(ListarReceitasQuery request, CancellationToken cancellationToken)
     {
-        var receitas = await _receitaRepository.ListarComItensAsync();
+        var receitas = await _receitaRepository.ListarComItensAsync(cancellationToken);
         
         return [.. receitas.Select(r => new ReceitaDto(
             r.Id,

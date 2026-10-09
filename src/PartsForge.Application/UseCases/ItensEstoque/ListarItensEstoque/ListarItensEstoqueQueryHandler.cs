@@ -10,7 +10,7 @@ public class ListarItensEstoqueQueryHandler(IItemEstoqueRepository repository) :
 
     public async Task<List<ItemEstoqueDto>> Handle(ListarItensEstoqueQuery request, CancellationToken cancellationToken)
     {
-        var itens = await _repository.ListarAsync();
+        var itens = await _repository.ListarAsync(cancellationToken);
         return [.. itens.Select(item => new ItemEstoqueDto(item.Id, item.Descricao, item.Quantidade))];
     }
 }

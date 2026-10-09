@@ -11,10 +11,10 @@ public class RemoverItemEstoqueCommandHandler(IItemEstoqueRepository repository,
 
     public async Task Handle(RemoverItemEstoqueCommand request, CancellationToken cancellationToken)
     {
-        var item = await _repository.ObterPorIdAsync(request.Id)
+        var item = await _repository.ObterPorIdAsync(request.Id, cancellationToken)
             ?? throw new ItemEstoqueNaoEncontradoException();
 
-        if (await _repository.EstaEmUsoAsync(item.Id))
+        if (await _repository.EstaEmUsoAsync(item.Id, cancellationToken))
             throw new ItemEstoqueEmUsoException();
 
         _repository.Remover(item);

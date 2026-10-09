@@ -12,7 +12,7 @@ public class AdicionarEstoqueItemEstoqueCommandHandler(IItemEstoqueRepository re
 
     public async Task Handle(AdicionarEstoqueItemEstoqueCommand request, CancellationToken cancellationToken)
     {
-        var item = await _repository.ObterPorIdAsync(request.Id)
+        var item = await _repository.ObterPorIdAsync(request.Id, cancellationToken)
             ?? throw new ItemEstoqueNaoEncontradoException();
         
         item.Incrementar(request.Quantidade);

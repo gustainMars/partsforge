@@ -15,7 +15,7 @@ public class CriarItemEstoqueCommandHandlerTest
 
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ExisteComDescricaoAsync(itemEstoque.Descricao, It.IsAny<int?>()))
+            .Setup(r => r.ExisteComDescricaoAsync(itemEstoque.Descricao, It.IsAny<int?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -36,7 +36,7 @@ public class CriarItemEstoqueCommandHandlerTest
 
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ExisteComDescricaoAsync(itemEstoque.Descricao, It.IsAny<int?>()))
+            .Setup(r => r.ExisteComDescricaoAsync(itemEstoque.Descricao, It.IsAny<int?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();

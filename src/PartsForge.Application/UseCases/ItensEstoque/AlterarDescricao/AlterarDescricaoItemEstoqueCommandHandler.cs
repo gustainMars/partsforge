@@ -11,12 +11,12 @@ public class AlterarDescricaoItemEstoqueCommandHandler(IItemEstoqueRepository re
 
     public async Task Handle(AlterarDescricaoItemEstoqueCommand request, CancellationToken cancellationToken)
     {
-        var item = await _repository.ObterPorIdAsync(request.Id) 
+        var item = await _repository.ObterPorIdAsync(request.Id, cancellationToken) 
             ?? throw new ItemEstoqueNaoEncontradoException();
         
         item.AlterarDescricao(request.NovaDescricao);
 
-        if (await _repository.ExisteComDescricaoAsync(item.Descricao, item.Id))
+        if (await _repository.ExisteComDescricaoAsync(item.Descricao, item.Id, cancellationToken))
             throw new DescricaoJaCadastradaException();
         
         await _unitOfWork.SalvarAlteracoesAsync(cancellationToken);

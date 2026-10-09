@@ -15,10 +15,10 @@ public class RemoverItemEstoqueCommandHandlerTest
 
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id))
+            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(itemEstoque);
         repositorioMock
-            .Setup(r => r.EstaEmUsoAsync(itemEstoque.Id))
+            .Setup(r => r.EstaEmUsoAsync(itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -36,7 +36,7 @@ public class RemoverItemEstoqueCommandHandlerTest
     {
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ObterPorIdAsync(It.IsAny<int>()))
+            .Setup(r => r.ObterPorIdAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((ItemEstoque?)null);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -55,10 +55,10 @@ public class RemoverItemEstoqueCommandHandlerTest
 
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id))
+            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(itemEstoque);
         repositorioMock
-            .Setup(r => r.EstaEmUsoAsync(itemEstoque.Id))
+            .Setup(r => r.EstaEmUsoAsync(itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();

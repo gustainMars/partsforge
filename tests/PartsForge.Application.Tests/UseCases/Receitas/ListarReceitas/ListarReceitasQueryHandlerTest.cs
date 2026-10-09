@@ -27,7 +27,7 @@ public class ListarReceitasQueryHandlerTest
         };
 
         var repositorioMock = new Mock<IReceitaRepository>();
-        repositorioMock.Setup(r => r.ListarComItensAsync())
+        repositorioMock.Setup(r => r.ListarComItensAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(receitas);
 
         var handler = new ListarReceitasQueryHandler(repositorioMock.Object);
@@ -47,7 +47,7 @@ public class ListarReceitasQueryHandlerTest
     public async Task Handle_ListarSemReceitas_DeveRetornarListaVazia()
     {
         var repositorioMock = new Mock<IReceitaRepository>();
-        repositorioMock.Setup(r => r.ListarComItensAsync())
+        repositorioMock.Setup(r => r.ListarComItensAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync([]);
 
         var handler = new ListarReceitasQueryHandler(repositorioMock.Object);

@@ -11,7 +11,7 @@ public class ObterItemEstoquePorIdQueryHandler(IItemEstoqueRepository repository
     
     public async Task<ItemEstoqueDto> Handle(ObterItemEstoquePorIdQuery request, CancellationToken cancellationToken)
     {
-        var item = await _repository.ObterPorIdAsync(request.Id)
+        var item = await _repository.ObterPorIdAsync(request.Id, cancellationToken)
             ?? throw new ItemEstoqueNaoEncontradoException();
         
         return new ItemEstoqueDto(item.Id, item.Descricao, item.Quantidade);

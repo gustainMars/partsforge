@@ -15,7 +15,7 @@ public class ListarItensEstoqueQueryHandlerTest
 
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ListarAsync())
+            .Setup(r => r.ListarAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync([itemEstoque1, itemEstoque2]);
 
         var handler = new ListarItensEstoqueQueryHandler(repositorioMock.Object);
@@ -33,7 +33,7 @@ public class ListarItensEstoqueQueryHandlerTest
     {
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ListarAsync())
+            .Setup(r => r.ListarAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync([]);
 
         var handler = new ListarItensEstoqueQueryHandler(repositorioMock.Object);

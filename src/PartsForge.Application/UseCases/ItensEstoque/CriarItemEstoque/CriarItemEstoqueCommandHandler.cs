@@ -15,7 +15,7 @@ public class CriarItemEstoqueCommandHandler(IItemEstoqueRepository repository, I
     {
         var item = new ItemEstoque(request.Descricao, request.Quantidade);
 
-        if (await _repository.ExisteComDescricaoAsync(item.Descricao))
+        if (await _repository.ExisteComDescricaoAsync(item.Descricao, cancellationToken: cancellationToken))
             throw new DescricaoJaCadastradaException();
 
         _repository.Adicionar(item);

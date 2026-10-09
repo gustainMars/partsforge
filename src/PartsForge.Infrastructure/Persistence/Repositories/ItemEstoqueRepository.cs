@@ -8,17 +8,17 @@ public class ItemEstoqueRepository(PartsForgeDbContext context) : IItemEstoqueRe
 {
     private readonly PartsForgeDbContext _context = context;
 
-    public Task<ItemEstoque?> ObterPorIdAsync(int id)
-        => _context.ItensEstoque.FirstOrDefaultAsync(i => i.Id == id);
+    public Task<ItemEstoque?> ObterPorIdAsync(int id, CancellationToken cancellationToken = default)
+        => _context.ItensEstoque.FirstOrDefaultAsync(i => i.Id == id, cancellationToken);
 
-    public Task<List<ItemEstoque>> ListarAsync()
-        => _context.ItensEstoque.ToListAsync();
+    public Task<List<ItemEstoque>> ListarAsync(CancellationToken cancellationToken = default)
+        => _context.ItensEstoque.ToListAsync(cancellationToken);
 
-    public Task<bool> ExisteComDescricaoAsync(string descricao, int? ignorandoId = null)
-        => _context.ItensEstoque.AnyAsync(i => i.Descricao == descricao && i.Id != ignorandoId);
+    public Task<bool> ExisteComDescricaoAsync(string descricao, int? ignorandoId = null, CancellationToken cancellationToken = default)
+        => _context.ItensEstoque.AnyAsync(i => i.Descricao == descricao && i.Id != ignorandoId, cancellationToken);
 
-    public Task<bool> EstaEmUsoAsync(int id)
-        => _context.Set<ReceitaItem>().AnyAsync(ri => ri.ItemEstoqueId == id);
+    public Task<bool> EstaEmUsoAsync(int id, CancellationToken cancellationToken = default)
+        => _context.Set<ReceitaItem>().AnyAsync(ri => ri.ItemEstoqueId == id, cancellationToken);
 
     public void Adicionar(ItemEstoque item)
         => _context.ItensEstoque.Add(item);

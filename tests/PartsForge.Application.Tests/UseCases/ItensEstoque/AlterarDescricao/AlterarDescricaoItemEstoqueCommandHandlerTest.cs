@@ -16,10 +16,10 @@ public class AlterarDescricaoItemEstoqueCommandHandlerTest
 
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id))
+            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(itemEstoque);
         repositorioMock
-            .Setup(r => r.ExisteComDescricaoAsync(novaDescricao, itemEstoque.Id))
+            .Setup(r => r.ExisteComDescricaoAsync(novaDescricao, itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
         
         var unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -40,10 +40,10 @@ public class AlterarDescricaoItemEstoqueCommandHandlerTest
 
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id))
+            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(itemEstoque);
         repositorioMock
-            .Setup(r => r.ExisteComDescricaoAsync(novaDescricao, itemEstoque.Id))
+            .Setup(r => r.ExisteComDescricaoAsync(novaDescricao, itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
         
         var unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -61,13 +61,14 @@ public class AlterarDescricaoItemEstoqueCommandHandlerTest
     {
         var itemEstoque = new ItemEstoque("Item A", 10) { Id = 1 };
         string novaDescricaoComEspacos = "  Nova Descrição  ";
+        string novaDescricao = "Nova Descrição";
 
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id))
+            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(itemEstoque);
         repositorioMock
-            .Setup(r => r.ExisteComDescricaoAsync("Nova Descrição", itemEstoque.Id))
+            .Setup(r => r.ExisteComDescricaoAsync(novaDescricao, itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -76,7 +77,7 @@ public class AlterarDescricaoItemEstoqueCommandHandlerTest
 
         await handler.Handle(new AlterarDescricaoItemEstoqueCommand(itemEstoque.Id, novaDescricaoComEspacos), CancellationToken.None);
 
-        repositorioMock.Verify(r => r.ExisteComDescricaoAsync("Nova Descrição", itemEstoque.Id), Times.Once);
+        repositorioMock.Verify(r => r.ExisteComDescricaoAsync(novaDescricao, itemEstoque.Id, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -84,7 +85,7 @@ public class AlterarDescricaoItemEstoqueCommandHandlerTest
     {
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ObterPorIdAsync(It.IsAny<int>()))
+            .Setup(r => r.ObterPorIdAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((ItemEstoque?)null);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -102,10 +103,10 @@ public class AlterarDescricaoItemEstoqueCommandHandlerTest
 
         var repositorioMock = new Mock<IItemEstoqueRepository>();
         repositorioMock
-            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id))
+            .Setup(r => r.ObterPorIdAsync(itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(itemEstoque);
         repositorioMock
-            .Setup(r => r.ExisteComDescricaoAsync(novaDescricao, itemEstoque.Id))
+            .Setup(r => r.ExisteComDescricaoAsync(novaDescricao, itemEstoque.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();

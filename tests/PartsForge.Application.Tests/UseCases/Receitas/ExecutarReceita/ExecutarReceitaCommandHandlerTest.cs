@@ -18,7 +18,7 @@ public class ExecutarReceitaCommandHandlerTest
 
         var repositorioMock = new Mock<IReceitaRepository>();
         repositorioMock
-            .Setup(r => r.ObterComItensAsync(1))
+            .Setup(r => r.ObterComItensAsync(1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(receita);
         
         var unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -36,7 +36,7 @@ public class ExecutarReceitaCommandHandlerTest
     {
         var repositorioMock = new Mock<IReceitaRepository>();
         repositorioMock
-            .Setup(r => r.ObterComItensAsync(1))
+            .Setup(r => r.ObterComItensAsync(1, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Receita?)null);
 
         var unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -56,7 +56,7 @@ public class ExecutarReceitaCommandHandlerTest
 
         var repositorioMock = new Mock<IReceitaRepository>();
         repositorioMock
-            .Setup(r => r.ObterComItensAsync(1))
+            .Setup(r => r.ObterComItensAsync(1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(receita);
         
         var unitOfWorkMock = new Mock<IUnitOfWork>();
