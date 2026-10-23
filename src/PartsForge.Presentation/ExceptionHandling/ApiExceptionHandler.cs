@@ -24,6 +24,12 @@ public class ApiExceptionHandler : IExceptionHandler
             DescricaoJaCadastradaException => new ProblemDetails { Status = 409, Title = exception.Message },
             ItemEstoqueEmUsoException => new ProblemDetails { Status = 409, Title = exception.Message },
             ItemEstoqueNaoEncontradoException => new ProblemDetails { Status = 404, Title = exception.Message },
+            ItensEstoqueNaoEncontradosException ex => new ProblemDetails
+            {
+                Status = 404,
+                Title = ex.Message,
+                Extensions = { ["itemEstoqueIdsNaoEncontrados"] = ex.ItemEstoqueIdsNaoEncontrados }
+            },
             ReceitaItemNaoEncontradoException => new ProblemDetails { Status = 404, Title = exception.Message },
             DomainException => new ProblemDetails { Status = 400, Title = exception.Message },
             _ => null
