@@ -88,6 +88,8 @@ Frontend: Angular, consumindo a API via `HttpClient`. Interface funcional, sem f
   }
   ```
 
+- Nos testes, nomeie mocks de dependência de forma genérica (`repositorioMock`, `unitOfWorkMock`) quando o handler só tem **uma** dependência daquele tipo. Quando o handler depende de mais de um repositório (ex: `CriarReceitaCommandHandler` usa `IReceitaRepository` e `IItemEstoqueRepository`), qualifique o nome com a entidade (`receitaRepositorioMock`, `itemEstoqueRepositorioMock`) para desambiguar. Não faça o rename retroativo dos testes existentes que já usam o nome genérico sem ambiguidade — a regra vale para testes novos.
+
 ## Clean Code
 
 - Se um código precisa de comentário para ser entendido, ele não está simples o suficiente — refatore em vez de comentar. Comentários só se justificam para explicar um "porquê" não óbvio (uma decisão, uma restrição externa, um workaround), nunca o "o quê".
