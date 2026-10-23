@@ -15,15 +15,7 @@ public class Receita(string descricao, List<ReceitaItem>? itens)
     {
         Itens = ValidarItens([ ..Itens, item ]);
     }
-
-    public void AlterarQuantidadeItem(int itemEstoqueId, int novaQuantidade)
-    {
-        var item = Itens.FirstOrDefault(i => i.ItemEstoqueId == itemEstoqueId)
-            ?? throw new ReceitaItemNaoEncontradoException();
-
-        item.AlterarQuantidade(novaQuantidade);
-    }
-
+    
     private static List<ReceitaItem> ValidarItens(List<ReceitaItem> itens)
     {
         var duplicados = itens
@@ -36,6 +28,22 @@ public class Receita(string descricao, List<ReceitaItem>? itens)
             throw new ItemDuplicadoException(duplicados);
 
         return itens;
+    }
+
+    public void AlterarQuantidadeItem(int itemEstoqueId, int novaQuantidade)
+    {
+        var item = Itens.FirstOrDefault(i => i.ItemEstoqueId == itemEstoqueId)
+            ?? throw new ReceitaItemNaoEncontradoException();
+
+        item.AlterarQuantidade(novaQuantidade);
+    }
+
+    public void RemoverItem(int itemEstoqueId)
+    {
+        var item = Itens.FirstOrDefault(i => i.ItemEstoqueId == itemEstoqueId)
+            ?? throw new ReceitaItemNaoEncontradoException();
+
+        Itens.Remove(item);
     }
 
     public List<ItemViabilidade> VerificarViabilidade()

@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PartsForge.Application.Dtos;
 using PartsForge.Application.UseCases.ReceitaItens.AlterarQuantidade;
+using PartsForge.Application.UseCases.ReceitaItens.RemoverReceitaItem;
 using PartsForge.Application.UseCases.Receitas.ConsultarViabilidade;
 using PartsForge.Application.UseCases.Receitas.ExecutarReceita;
 using PartsForge.Application.UseCases.Receitas.ListarReceitas;
@@ -67,6 +68,15 @@ public class ReceitasController(ISender sender) : ControllerBase
     {
         var command = new AlterarQuantidadeReceitaItemCommand(receitaId, itemEstoqueId, request.NovaQuantidade);
         await _sender.Send(command, cancellationToken);
+        return NoContent();
+    }
+
+    [HttpDelete("{receitaId}/itens/{itemEstoqueId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RemoverItem(int receitaId, int itemEstoqueId, CancellationToken cancellationToken)
+    {
+        await _sender.Send(new RemoverReceitaItemCommand(receitaId, itemEstoqueId), cancellationToken);
         return NoContent();
     }
 }

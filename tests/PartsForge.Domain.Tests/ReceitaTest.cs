@@ -115,4 +115,57 @@ public class ReceitaTest
         Assert.Equal(10, itemSuficiente.Quantidade);
     }
 
+    [Fact]
+    public void RemoverItem_ItemExistenteComOutrosItensNaReceita_DeveRemoverApenasOItemCorreto()
+    {
+        var itemA = new ItemEstoque("Item A", 10) { Id = 1 };
+        var itemB = new ItemEstoque("Item B", 10) { Id = 2 };
+        var receita = new Receita("Receita Teste", [
+            new ReceitaItem(1, itemA, 5),
+            new ReceitaItem(1, itemB, 3)
+        ]);
+
+        receita.RemoverItem(itemA.Id);
+
+        Assert.Single(receita.Itens);
+        Assert.Equal(itemB.Id, receita.Itens[0].ItemEstoqueId);
+    }
+
+    [Fact]
+    public void RemoverItem_ItemInexistente_DeveLancarReceitaItemNaoEncontradoException()
+    {
+        var itemA = new ItemEstoque("Item A", 10) { Id = 1 };
+        var receita = new Receita("Receita Teste", [new ReceitaItem(1, itemA, 5)]);
+
+        Assert.Throws<ReceitaItemNaoEncontradoException>(() => receita.RemoverItem(999));
+        Assert.Single(receita.Itens);
+    }
+
+    [Fact]
+    public void AlterarQuantidadeItem_ItemExistenteComOutrosItensNaReceita_DeveAlterarQuantidadeDeUmItem()
+    {
+        var quantidadeItemB = 5;
+        var itemA = new ItemEstoque("Item A", 10) { Id = 1 };
+        var itemB = new ItemEstoque("Item B", 10) { Id = 2 };
+        var receita = new Receita("Receita Teste", [
+            new ReceitaItem(1, itemA, 5),
+            new ReceitaItem(1, itemB, quantidadeItemB)
+        ]);
+        var novaQuantidade = 9;
+
+        receita.AlterarQuantidadeItem(itemA.Id, novaQuantidade);
+
+        Assert.Equal(novaQuantidade, receita.Itens.First(i => i.ItemEstoqueId == itemA.Id).Quantidade);
+        Assert.Equal(quantidadeItemB, receita.Itens.First(i => i.ItemEstoqueId == itemB.Id).Quantidade);
+    }
+
+    [Fact]
+    public void AlterarQuantidadeItem_ItemInexistente_DeveLancarReceitaItemNaoEncontradoException()
+    {
+        var itemA = new ItemEstoque("Item A", 10) { Id = 1 };
+        var receita = new Receita("Receita Teste", [new ReceitaItem(1, itemA, 5)]);
+
+        Assert.Throws<ReceitaItemNaoEncontradoException>(() => receita.AlterarQuantidadeItem(999, 10));
+        Assert.Single(receita.Itens);
+    }
 }
