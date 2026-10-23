@@ -1,10 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PartsForge.Application.Dtos;
+using PartsForge.Application.UseCases.ReceitaItens.AlterarQuantidade;
 using PartsForge.Application.UseCases.Receitas.ConsultarViabilidade;
 using PartsForge.Application.UseCases.Receitas.ExecutarReceita;
 using PartsForge.Application.UseCases.Receitas.ListarReceitas;
 using PartsForge.Application.UseCases.Receitas.ObterReceitaPorId;
+using PartsForge.Presentation.Requests;
 using PartsForge.Presentation.Responses;
 
 namespace PartsForge.Presentation.Controllers;
@@ -54,6 +56,17 @@ public class ReceitasController(ISender sender) : ControllerBase
         
         await _sender.Send(command, cancellationToken);
         
+        return NoContent();
+    }
+
+    [HttpPatch("{receitaId}/itens/{itemEstoqueId}/quantidade")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AlterarQuantidadeReceitaItem(int receitaId, int itemEstoqueId, AlterarQuantidadeRequest request, CancellationToken cancellationToken)
+    {
+        var command = new AlterarQuantidadeReceitaItemCommand(receitaId, itemEstoqueId, request.NovaQuantidade);
+        await _sender.Send(command, cancellationToken);
         return NoContent();
     }
 }
